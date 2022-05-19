@@ -1,2 +1,4 @@
-src/org/json
-lib/MYSQL
+build/
+src/org/
+src/lib/db.sqlite
+/nbproject/private/
