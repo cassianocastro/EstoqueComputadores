@@ -1,9 +1,12 @@
 package model.interfaces;
+
 import java.sql.SQLException;
+
 /**
- * @author cassiano
+ *
  */
-public interface ControllStrategy {
+public interface ControllStrategy
+{
 
     public void create() throws SQLException;
 
@@ -16,4 +19,5 @@ public interface ControllStrategy {
     public void search() throws SQLException;
 
     public boolean isValid(int ID) throws SQLException;
+    
 }

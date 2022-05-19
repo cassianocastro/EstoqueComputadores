@@ -7,31 +7,38 @@ import java.sql.SQLException;
 import model.interfaces.ControllStrategy;
 
 /**
- * @author cassiano
+ *
  */
-public class ComputadorStrategy implements ControllStrategy{
+public class ComputadorStrategy implements ControllStrategy
+{
+
     private final ComputadorDAO computadorDao;
     private final View computadorView;
-    
-    public ComputadorStrategy(ComputadorDAO computadorDao){
+
+    public ComputadorStrategy(ComputadorDAO computadorDao)
+    {
         this.computadorDao  = computadorDao;
         this.computadorView = new ComputadorView();
     }
-    
+
     @Override
-    public void create() throws SQLException{
+    public void create() throws SQLException
+    {
         String[] dados = this.computadorView.insert();
-        if ( dados == null ) return;
-        
-        String marca        = dados[0];
-        String modelo       = dados[1];
-        String processador  = dados[2];
-        String tipo         = dados[3];
-        String cor          = dados[4];
-        int ram             = Integer.parseInt(dados[5]);
-        int armzmnto        = Integer.parseInt(dados[6]);
-        float tamanhoTela   = Float.parseFloat(dados[7]);
-       
+        if ( dados == null )
+        {
+            return;
+        }
+
+        String marca = dados[0];
+        String modelo = dados[1];
+        String processador = dados[2];
+        String tipo = dados[3];
+        String cor = dados[4];
+        int ram = Integer.parseInt(dados[5]);
+        int armzmnto = Integer.parseInt(dados[6]);
+        float tamanhoTela = Float.parseFloat(dados[7]);
+
         this.computadorDao.create(
             new Computer(
                 0, ram, armzmnto, tamanhoTela, marca, modelo, processador, cor, tipo
@@ -39,27 +46,31 @@ public class ComputadorStrategy implements ControllStrategy{
         );
         this.computadorView.show("Computador cadastrado.");
     }
-    
+
     @Override
-    public void read() throws SQLException{
+    public void read() throws SQLException
+    {
         this.computadorView.show(
             this.computadorDao.read().toString()
         );
     }
-    
+
     @Override
-    public void update() throws SQLException{
+    public void update() throws SQLException
+    {
         int ID = Integer.parseUnsignedInt(
             this.computadorView.getID()
         );
-        if ( ! isValid(ID) ){
+        if ( !isValid(ID) )
+        {
             this.computadorView.show("Computador não encontrado.");
             return;
         }
-        
-        Computer computador = this.computadorDao.findByID( ID );
+
+        Computer computador = this.computadorDao.findByID(ID);
         String[] dados = this.computadorView.update();
-        switch ( dados[0] ){
+        switch ( dados[0] )
+        {
             case "Marca":
                 computador.setMarca(dados[1]);
                 break;
@@ -87,35 +98,40 @@ public class ComputadorStrategy implements ControllStrategy{
         this.computadorDao.update(computador);
         this.computadorView.show("Registro atualizado.");
     }
-    
+
     @Override
-    public void delete() throws SQLException{
+    public void delete() throws SQLException
+    {
         int ID = Integer.parseUnsignedInt(
             this.computadorView.getID()
         );
-        if ( isValid(ID) ){
-            this.computadorDao.delete( ID );
+        if ( isValid(ID) )
+        {
+            this.computadorDao.delete(ID);
             this.computadorView.show("Computador excluído.");
             return;
         }
         this.computadorView.show("Computador não encontrado.");
     }
-    
+
     @Override
-    public void search() throws SQLException{
+    public void search() throws SQLException
+    {
         int ID = Integer.parseUnsignedInt(
             this.computadorView.getID()
         );
-        if ( isValid(ID) ){
-            Computer computador = this.computadorDao.findByID( ID );
+        if ( isValid(ID) )
+        {
+            Computer computador = this.computadorDao.findByID(ID);
             this.computadorView.show(computador.toString());
             return;
         }
         this.computadorView.show("Computador não encontrado.");
     }
-    
+
     @Override
-    public boolean isValid(int ID) throws SQLException{
+    public boolean isValid(int ID) throws SQLException
+    {
         return this.computadorDao.exists(ID);
     }
 }

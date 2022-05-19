@@ -5,59 +5,70 @@ import java.util.Date;
 
 /**
  *
- * @author User
  */
-public abstract class Person{
+abstract public class Person
+{
+
     private String nome, cpf;
     private Sex sexo;
     private Date nascimento;
 
-    public Person(String nome, String cpf, Sex sexo, Date nascimento) {
-        this.nome       = nome;
-        this.sexo       = sexo;
-        this.cpf        = cpf;
+    public Person(String nome, String cpf, Sex sexo, Date nascimento)
+    {
+        this.nome = nome;
+        this.sexo = sexo;
+        this.cpf = cpf;
         this.nascimento = nascimento;
     }
-    
+
     @Override
-    public String toString(){
-        return "\nNome: "      + this.nome +
-               "\nSexo: "      + this.sexo.getDescricao() +
-               "\nCPF: "       + this.cpf  +
-               "\nData de "    +
-                "Nascimento: " + new SimpleDateFormat("dd/MM/yyyy")
-                                 .format(this.nascimento);
+    public String toString()
+    {
+        return "\nNome: " + this.nome
+            + "\nSexo: " + this.sexo.getDescricao()
+            + "\nCPF: " + this.cpf
+            + "\nData de "
+            + "Nascimento: " + new SimpleDateFormat("dd/MM/yyyy")
+                .format(this.nascimento);
     }
-    
-    public String getNome(){
+
+    public String getNome()
+    {
         return this.nome;
     }
-    
-    public void setNome(String nome){
+
+    public void setNome(String nome)
+    {
         this.nome = nome;
     }
 
-    public String getCpf() {
+    public String getCpf()
+    {
         return this.cpf;
     }
-    
-    public void setCpf(String cpf) {
+
+    public void setCpf(String cpf)
+    {
         this.cpf = cpf;
     }
-    
-    public String getSexo(){
+
+    public String getSexo()
+    {
         return this.sexo.getDescricao();
     }
 
-    public void setSexo(Sex sexo) {
+    public void setSexo(Sex sexo)
+    {
         this.sexo = sexo;
     }
-    
-    public Date getNascimento() {
+
+    public Date getNascimento()
+    {
         return this.nascimento;
     }
-    
-    public void setNascimento(Date data_nascimento) {
+
+    public void setNascimento(Date data_nascimento)
+    {
         this.nascimento = data_nascimento;
     }
 }

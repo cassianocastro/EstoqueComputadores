@@ -3,23 +3,30 @@ package model;
 import java.util.*;
 
 /**
- * @author cassiano
+ *
  */
-public class Clientes {
+public class Clientes
+{
+
     private final List<Client> clientes;
-    
-    public Clientes(){
+
+    public Clientes()
+    {
         this.clientes = new LinkedList<>();
     }
-    
-    public void add(Client client) {
+
+    public void add(Client client)
+    {
         this.clientes.add(client);
     }
 
-    public CharSequence toSequence() {
-        if ( ! this.clientes.isEmpty() ){
+    public CharSequence toSequence()
+    {
+        if ( !this.clientes.isEmpty() )
+        {
             StringBuilder msg = new StringBuilder();
-            for (Client cliente : this.clientes) {
+            for ( Client cliente : this.clientes )
+            {
                 msg.append(cliente.toString());
                 msg.append("\n***\n");
             }
@@ -27,5 +34,5 @@ public class Clientes {
         }
         return new StringBuilder("Sem registros");
     }
-    
+
 }

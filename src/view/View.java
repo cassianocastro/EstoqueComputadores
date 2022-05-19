@@ -4,26 +4,32 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author cassiano
  */
+abstract public class View
+{
 
-public abstract class View {
-    public abstract String[] insert();
-    public abstract String[] update();
+    abstract public String[] insert();
 
-    public final int getOption(){
+    abstract public String[] update();
+
+    final public int getOption()
+    {
         return JOptionPane.showOptionDialog(
             null,
             "Escolha a opção:", "Olá",
             JOptionPane.DEFAULT_OPTION,
             JOptionPane.INFORMATION_MESSAGE,
             null,
-            new String[] {"Inserir", "Exibir", "Procurar", "Atualizar", "Remover", "Voltar"},
+            new String[]
+            {
+                "Inserir", "Exibir", "Procurar", "Atualizar", "Remover", "Voltar"
+            },
             null
         );
     }
-    
-    public final void show(CharSequence message){
+
+    final public void show(CharSequence message)
+    {
         JOptionPane.showMessageDialog(
             null,
             message,
@@ -31,9 +37,10 @@ public abstract class View {
             JOptionPane.INFORMATION_MESSAGE
         );
     }
-    
-    public final String getID(){
+
+    final public String getID()
+    {
         return JOptionPane.showInputDialog("Informe o ID:");
     }
-    
+
 }

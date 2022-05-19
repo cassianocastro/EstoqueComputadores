@@ -10,45 +10,52 @@ import javax.swing.text.MaskFormatter;
 
 /**
  *
- * @author User
  */
-public final class Cadastro extends JDialog implements ActionListener{
+public final class Cadastro extends JDialog implements ActionListener
+{
+
     private JComponent panelLabels, panelFields, panelButtons, panelPrincipal, jOptionPane;
     private GridLayout grid;
-    private JFormattedTextField fieldNome, fieldCPF, fieldNascimento;
+    private final JFormattedTextField fieldNome, fieldCPF, fieldNascimento;
     private MaskFormatter maskCPF, maskNascimento;
-    private JComboBox<String> comboSexo;
-    private JButton buttonSalvar, buttonCancelar;
+    private final JComboBox<String> comboSexo;
+    private final JButton buttonSalvar, buttonCancelar;
     private String[] dados;
-    
-    public Cadastro(){
+
+    public Cadastro()
+    {
         setModalityType(DEFAULT_MODALITY_TYPE);
-        this.grid            = new GridLayout(4, 1);
-        this.panelLabels     = new JPanel(this.grid);
-        this.panelFields     = new JPanel(this.grid);
-        this.panelButtons    = new JPanel();
-        this.panelPrincipal  = new JPanel(new BorderLayout(10, 0));
-        
-        try {
-            this.maskCPF        = new MaskFormatter("###.###.###-##");
+        this.grid = new GridLayout(4, 1);
+        this.panelLabels = new JPanel(this.grid);
+        this.panelFields = new JPanel(this.grid);
+        this.panelButtons = new JPanel();
+        this.panelPrincipal = new JPanel(new BorderLayout(10, 0));
+
+        try
+        {
+            this.maskCPF = new MaskFormatter("###.###.###-##");
             this.maskNascimento = new MaskFormatter("##/##/####");
-        } catch (ParseException e) {
+        } catch (ParseException e)
+        {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
-        this.fieldNome       = new JFormattedTextField();
-        this.fieldCPF        = new JFormattedTextField(this.maskCPF);
+        this.fieldNome = new JFormattedTextField();
+        this.fieldCPF = new JFormattedTextField(this.maskCPF);
         this.fieldNascimento = new JFormattedTextField(this.maskNascimento);
-        this.comboSexo       = new JComboBox<>(new String[] {"m", "f"});
-        
-        this.fieldNome.setColumns(20);
-        
-        this.buttonSalvar    = new JButton("Salvar");
-        this.buttonCancelar  = new JButton("Cancelar");
+        this.comboSexo = new JComboBox<>(new String[]
+        {
+            "m", "f"
+        });
 
-        this.buttonSalvar   .addActionListener(this);
-        this.buttonCancelar .addActionListener(this);
-        
+        this.fieldNome.setColumns(20);
+
+        this.buttonSalvar = new JButton("Salvar");
+        this.buttonCancelar = new JButton("Cancelar");
+
+        this.buttonSalvar.addActionListener(this);
+        this.buttonCancelar.addActionListener(this);
+
         this.panelLabels.add(new JLabel("Nome:", SwingConstants.RIGHT));
         this.panelLabels.add(new JLabel("CPF:", SwingConstants.RIGHT));
         this.panelLabels.add(new JLabel("Nascimento:", SwingConstants.RIGHT));
@@ -58,10 +65,10 @@ public final class Cadastro extends JDialog implements ActionListener{
         this.panelFields.add(this.fieldCPF);
         this.panelFields.add(this.fieldNascimento);
         this.panelFields.add(this.comboSexo);
-        
+
         this.panelButtons.add(this.buttonSalvar);
         this.panelButtons.add(this.buttonCancelar);
-        
+
         this.panelPrincipal.add(this.panelLabels, "West");
         this.panelPrincipal.add(this.panelFields, "Center");
         this.panelPrincipal.add(this.panelButtons, "South");
@@ -71,11 +78,12 @@ public final class Cadastro extends JDialog implements ActionListener{
             JOptionPane.INFORMATION_MESSAGE,
             JOptionPane.DEFAULT_OPTION,
             null,
-            new Object[] {
+            new Object[]
+            {
                 this.panelPrincipal
             }
         );
-        setContentPane( this.jOptionPane );
+        setContentPane(this.jOptionPane);
         pack();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -83,22 +91,28 @@ public final class Cadastro extends JDialog implements ActionListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         Object o = e.getSource();
-        if ( o == this.buttonSalvar ){
+
+        if ( o == this.buttonSalvar )
+        {
             this.dados = new String[]
             {
-                this.fieldNome      .getText(),
-                this.fieldCPF       .getText(),
-                this.comboSexo      .getSelectedItem().toString(),
+                this.fieldNome.getText(),
+                this.fieldCPF.getText(),
+                this.comboSexo.getSelectedItem().toString(),
                 this.fieldNascimento.getText()
             };
-        }else if ( o == this.buttonCancelar )
+        } else if ( o == this.buttonCancelar )
+        {
             JOptionPane.showMessageDialog(rootPane, "Op. cancelada.");
+        }
         this.dispose();
     }
 
-    public String[] getDados(){
+    public String[] getDados()
+    {
         return this.dados;
     }
 
