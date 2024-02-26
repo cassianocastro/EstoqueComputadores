@@ -1,4 +1,7 @@
+nbproject/
 build/
+dist/
+
 src/org/
-src/lib/db.sqlite
-/nbproject/private/
+
+*.sqlite
