@@ -1,25 +1,26 @@
 package model.dao;
 
-import model.ConfigDataBase;
+import model.DBConfig;
 import java.sql.*;
 
-public class ConnectionSingleton
+/**
+ *
+ */
+public class ConnectionFactory
 {
 
-    private static Connection connection;
+    private Connection connection;
 
-    private ConnectionSingleton() {}
-
-    static public Connection getInstance(ConfigDataBase config) throws SQLException
+    public Connection getConnection(DBConfig config) throws SQLException
     {
-        if ( connection == null )
+        if ( this.connection == null )
         {
-            connection = DriverManager.getConnection(
-                config.getURL(),
+            this.connection = DriverManager.getConnection(
+                config.getDSN(),
                 config.getUser(),
                 config.getPassword()
             );
         }
-        return connection;
+        return this.connection;
     }
 }

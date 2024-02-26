@@ -1,138 +1,132 @@
 package model.dao;
 
-import model.interfaces.PersonDAO;
 import model.*;
 import java.sql.*;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  */
-public class ClienteDAO implements PersonDAO
+public class ClientDAO
 {
 
-    private Connection connection;
+    private final Connection connection;
 
-    public void update(Connection connection)
+    public ClientDAO(Connection connection)
     {
         this.connection = connection;
     }
 
-    @Override
-    public void create(Person person) throws SQLException
+    public void insert(Client client) throws SQLException
     {
-        String SQL = "INSERT INTO clientes "
-            + "( nome, sexo, cpf, data_nasc ) "
-            + "VALUES "
-            + "( ?, ?, ?, ? )";
+        final String SQL = "INSERT INTO client(name, sex, cpf, birthDate) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
+        try (var statement = this.connection.prepareStatement(SQL))
         {
-            statement.setString(1, person.getNome());
-            statement.setString(2, person.getSexo());
-            statement.setString(3, person.getCpf());
-            statement.setDate(4, new Date(person.getNascimento().getTime()));
+            statement.setString(1, client.getName());
+            statement.setString(2, client.getSex());
+            statement.setString(3, client.getCPF());
+            statement.setLong(4, client.getBirthDate().getTimeInMillis());
+
             statement.executeUpdate();
         }
     }
 
-    @Override
-    public List read() throws SQLException
+    public void update(Client client) throws SQLException
     {
-        List<Client> list = new LinkedList<>();
-        String SQL = "SELECT * FROM clientes";
+        final String SQL = "UPDATE client SET name = ?, sex = ?, cpf = ?, birthDate = ? WHERE PK_ID = ?";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery())
+        try (var statement = this.connection.prepareStatement(SQL))
         {
+            statement.setString(1, client.getName());
+            statement.setString(2, client.getSex());
+            statement.setString(3, client.getCPF());
+            statement.setLong(4, client.getBirthDate().getTimeInMillis());
+            statement.setString(5, client.getID().toString());
+
+            statement.executeUpdate();
+        }
+    }
+
+    public void delete(Client client) throws SQLException
+    {
+        final String SQL = "DELETE FROM client WHERE PK_ID = ?";
+
+        try (var statement = this.connection.prepareStatement(SQL))
+        {
+            statement.setString(1, client.getID().toString());
+
+            statement.executeUpdate();
+        }
+    }
+
+    public List<Client> getAll() throws SQLException
+    {
+        final String SQL = "SELECT PK_ID, name, cpf, sex, birthDate FROM client";
+
+        try (var statement = this.connection.createStatement();
+            var rs = statement.executeQuery(SQL))
+        {
+            List<Client> list = new LinkedList<>();
+
             while ( rs.next() )
             {
-                int ID = rs.getInt("id");
-                String nome = rs.getString("nome");
-                String cpf = rs.getString("cpf");
-                Sex sexo = Sex.valueOf(
-                    rs.getString("sexo"));
-                java.util.Date data = rs.getDate("data_nasc");
-                list.add(new Client(ID, nome, cpf, sexo, data));
+                String id     = rs.getString("PK_ID");
+                String name   = rs.getString("name");
+                String cpf    = rs.getString("cpf");
+                Sex sex       = Sex.valueOf(rs.getString("sex"));
+                Calendar date = Calendar.getInstance();
+
+                date.setTimeInMillis(rs.getLong("birthDate"));
+
+                list.add(new Client(Long.parseLong(id), name, cpf, sex, date));
             }
             return list;
         }
     }
 
-    @Override
-    public void update(Person person) throws SQLException
+    public Client findByID(Long id) throws SQLException
     {
-        Client cliente = (Client) person;
-        String SQL = "UPDATE clientes SET "
-            + "nome = ?, "
-            + "sexo = ?, "
-            + "cpf = ?, "
-            + "data_nasc = ? "
-            + "WHERE id = ?";
+        final String SQL = "SELECT name, cpf, sex, birthDate FROM client WHERE PK_ID = ?";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
+        try (var statement = this.connection.prepareStatement(SQL))
         {
-            statement.setString(1, cliente.getNome());
-            statement.setString(2, cliente.getSexo());
-            statement.setString(3, cliente.getCpf());
-            statement.setDate(4, new Date(cliente.getNascimento().getTime()));
-            statement.setInt(5, cliente.getID());
-            statement.executeUpdate();
-        }
-    }
+            statement.setString(1, id.toString());
 
-    @Override
-    public void delete(int ID) throws SQLException
-    {
-        String SQL = "DELETE FROM clientes WHERE id = ?";
+            var rs = statement.executeQuery();
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
-        {
-            statement.setInt(1, ID);
-            statement.executeUpdate();
-        }
-    }
-
-    @Override
-    public Person findByID(int index) throws SQLException
-    {
-        String SQL = "SELECT * FROM clientes WHERE id = ?";
-
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
-        {
-            statement.setInt(1, index);
-            try (ResultSet rs = statement.executeQuery())
+            if ( ! rs.next() )
             {
-                while ( rs.next() )
-                {
-                    int ID = rs.getInt("id");
-                    String nome = rs.getString("nome");
-                    String cpf = rs.getString("cpf");
-                    Sex sexo = Sex.valueOf(rs.getString("sexo"));
-                    Date data = rs.getDate("data_nasc");
-                    return new Client(ID, nome, cpf, sexo, data);
-                }
+                throw new SQLException("Client not found!");
             }
+            String name   = rs.getString("name");
+            String cpf    = rs.getString("cpf");
+            Sex sex       = Sex.valueOf(rs.getString("sex"));
+            Calendar date = Calendar.getInstance();
+
+            date.setTimeInMillis(rs.getLong("birthDate"));
+
+            return new Client(id, name, cpf, sex, date);
         }
-        return null;
     }
 
-    @Override
-    public boolean exists(int ID) throws SQLException
+    public boolean exists(Long id) throws SQLException
     {
-        String SQL = "SELECT EXISTS( SELECT id FROM clientes WHERE id = ? ) as result";
+        final String SQL = "SELECT exists(SELECT PK_ID FROM client WHERE PK_ID = ?) AS result";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
+        try (var statement = this.connection.prepareStatement(SQL))
         {
-            statement.setInt(1, ID);
-            ResultSet rs = statement.executeQuery();
+            statement.setString(1, id.toString());
+
+            var rs = statement.executeQuery();
+
             if ( rs.next() )
             {
                 return rs.getInt("result") == 1;
             }
+            return false;
         }
-        return false;
     }
-
 }

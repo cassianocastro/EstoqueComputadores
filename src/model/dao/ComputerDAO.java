@@ -1,6 +1,5 @@
 package model.dao;
 
-import model.interfaces.PcDAO;
 import model.Computer;
 import java.sql.*;
 import java.util.LinkedList;
@@ -9,153 +8,138 @@ import java.util.List;
 /**
  *
  */
-public class ComputadorDAO implements PcDAO
+public class ComputerDAO
 {
 
-    private Connection connection;
+    private final Connection connection;
 
-    public void update(Connection connection)
+    public ComputerDAO(Connection connection)
     {
         this.connection = connection;
     }
 
-    @Override
-    public void create(Computer computador) throws SQLException
+    public void insert(Computer computer) throws SQLException
     {
-        String SQL = "INSERT INTO computadores "
-            + "( marca, modelo, processador, ram, armazenamento, tipo, cor, tamanho_tela ) "
-            + "VALUES "
-            + "( ?, ?, ?, ?, ?, ?, ?, ? )";
+        final String SQL = "INSERT INTO computer(mark, model, processor, ram, storage, type, color, screenSize) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
+        try (var statement = this.connection.prepareStatement(SQL))
         {
-            statement.setString(1, computador.getMarca());
-            statement.setString(2, computador.getModelo());
-            statement.setString(3, computador.getProcessador());
-            statement.setInt(4, computador.getRam());
-            statement.setInt(5, computador.getArmazenamento());
-            statement.setString(6, computador.getTipo());
-            statement.setString(7, computador.getCor());
-            statement.setFloat(8, computador.getTamanhoTela());
+            statement.setString(1, computer.getMark());
+            statement.setString(2, computer.getModel());
+            statement.setString(3, computer.getProcessor());
+            statement.setInt(4, computer.getRAM());
+            statement.setInt(5, computer.getStorage());
+            statement.setString(6, computer.getType());
+            statement.setString(7, computer.getColor());
+            statement.setFloat(8, computer.getScreenSize());
+
             statement.executeUpdate();
         }
     }
 
-    @Override
-    public List read() throws SQLException
+    public void update(Computer computer) throws SQLException
     {
-        List<Computer> list = new LinkedList<>();
-        String SQL = "SELECT * FROM computadores";
+        final String SQL = "UPDATE computer SET mark = ?, model = ?, processor = ?, "
+            + "ram = ?, storage = ?, type = ?, color = ?, screenSize = ? WHERE PK_ID = ?";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery())
+        try (var statement = this.connection.prepareStatement(SQL))
         {
+            statement.setString(1, computer.getMark());
+            statement.setString(2, computer.getModel());
+            statement.setString(3, computer.getProcessor());
+            statement.setInt(4, computer.getRAM());
+            statement.setInt(5, computer.getStorage());
+            statement.setString(6, computer.getType());
+            statement.setString(7, computer.getColor());
+            statement.setFloat(8, computer.getScreenSize());
+            statement.setString(9, computer.getID().toString());
+
+            statement.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException
+    {
+        final String SQL = "DELETE FROM computer WHERE PK_ID = ?";
+
+        try (var statement = this.connection.prepareStatement(SQL))
+        {
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        }
+    }
+
+    public List<Computer> getAll() throws SQLException
+    {
+        final String SQL = "SELECT PK_ID, ram, storage, mark, model, processor,type, color, screenSize FROM computer";
+
+        try (var statement = this.connection.createStatement();
+            var rs = statement.executeQuery(SQL))
+        {
+            List<Computer> list = new LinkedList<>();
+
             while ( rs.next() )
             {
-                int ID = rs.getInt("id");
-                int ram = rs.getInt("ram");
-                int armzmnto = rs.getInt("armazenamento");
-                String marca = rs.getString("marca");
-                String modelo = rs.getString("modelo");
-                String processador = rs.getString("processador");
-                String tipo = rs.getString("tipo");
-                String cor = rs.getString("cor");
-                float tamanhoTela = rs.getFloat("tamanho_tela");
-                list.add(new Computer(
-                    ID, ram, armzmnto, tamanhoTela, marca, modelo, processador, cor, tipo
-                ));
+                long id          = rs.getInt("PK_ID");
+                int ram          = rs.getInt("ram");
+                int storage      = rs.getInt("storage");
+                String mark      = rs.getString("mark");
+                String model     = rs.getString("model");
+                String processor = rs.getString("processor");
+                String type      = rs.getString("type");
+                String color     = rs.getString("color");
+                float screenSize = rs.getFloat("screenSize");
+
+                list.add(new Computer(id, ram, storage, screenSize, mark, model, processor, color, type));
             }
             return list;
         }
     }
 
-    @Override
-    public void update(Computer computador) throws SQLException
+    public Computer findByID(Long id) throws SQLException
     {
-        String SQL = "UPDATE computadores SET "
-            + "marca = ?, "
-            + "modelo = ?, "
-            + "processador = ?, "
-            + "ram = ?, "
-            + "armazenamento = ?,"
-            + "tipo = ?, "
-            + "cor = ?, "
-            + "tamanho_tela = ? "
-            + "WHERE id = ?";
+        final String SQL = "SELECT ram, storage, mark, model, processor,type, color, screenSize FROM computer WHERE PK_ID = ?";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
+        try (var statement = this.connection.prepareStatement(SQL))
         {
-            statement.setString(1, computador.getMarca());
-            statement.setString(2, computador.getModelo());
-            statement.setString(3, computador.getProcessador());
-            statement.setInt(4, computador.getRam());
-            statement.setInt(5, computador.getArmazenamento());
-            statement.setString(6, computador.getTipo());
-            statement.setString(7, computador.getCor());
-            statement.setFloat(8, computador.getTamanhoTela());
-            statement.setInt(9, computador.getID());
-            statement.executeUpdate();
-        }
-    }
+            statement.setString(1, id.toString());
 
-    @Override
-    public void delete(int ID) throws SQLException
-    {
-        String SQL = "DELETE FROM computadores WHERE id = ?";
+            var rs = statement.executeQuery();
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
-        {
-            statement.setInt(1, ID);
-            statement.executeUpdate();
-        }
-    }
-
-    @Override
-    public Computer findByID(int index) throws SQLException
-    {
-        String SQL = "SELECT * FROM computadores WHERE id = ?";
-
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
-        {
-            statement.setInt(1, index);
-            try (ResultSet rs = statement.executeQuery())
+            if ( ! rs.next() )
             {
-                while ( rs.next() )
-                {
-                    int ID = rs.getInt("id");
-                    int ram = rs.getInt("ram");
-                    int armzmnto = rs.getInt("armazenamento");
-                    String marca = rs.getString("marca");
-                    String modelo = rs.getString("modelo");
-                    String processador = rs.getString("processador");
-                    String tipo = rs.getString("tipo");
-                    String cor = rs.getString("cor");
-                    float tamanhoTela = rs.getFloat("tamanho_tela");
-                    return new Computer(
-                        ID, ram, armzmnto, tamanhoTela, marca, modelo, processador, cor, tipo
-                    );
-                }
+                throw new SQLException("Computer not found!");
             }
+            int ram          = rs.getInt("ram");
+            int storage      = rs.getInt("storage");
+            String mark      = rs.getString("mark");
+            String model     = rs.getString("model");
+            String processor = rs.getString("processor");
+            String type      = rs.getString("type");
+            String color     = rs.getString("color");
+            float screenSize = rs.getFloat("screenSize");
+
+            return new Computer(id, ram, storage, screenSize, mark, model, processor, color, type);
         }
-        return null;
     }
 
-    @Override
-    public boolean exists(int ID) throws SQLException
+    public boolean exists(Long id) throws SQLException
     {
-        String SQL = "SELECT EXISTS( SELECT id FROM computadores WHERE id = ? ) AS result";
+        final String SQL = "SELECT exists(SELECT id FROM computadores WHERE id = ?) AS result";
 
-        try (PreparedStatement statement = this.connection.prepareStatement(SQL))
+        try (var statement = this.connection.prepareStatement(SQL))
         {
-            statement.setInt(1, ID);
-            try (ResultSet rs = statement.executeQuery())
+            statement.setString(1, id.toString());
+
+            var rs = statement.executeQuery();
+
+            if ( rs.next() )
             {
-                if ( rs.next() )
-                {
-                    return rs.getInt("result") == 1;
-                }
+                return rs.getInt("result") == 1;
             }
+            return false;
         }
-        return false;
     }
 }
