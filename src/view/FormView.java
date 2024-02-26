@@ -11,20 +11,32 @@ import javax.swing.text.MaskFormatter;
 /**
  *
  */
-public final class Cadastro extends JDialog implements ActionListener
+final public class FormView extends JDialog implements ActionListener
 {
 
     private JComponent panelLabels, panelFields, panelButtons, panelPrincipal, jOptionPane;
     private GridLayout grid;
-    private final JFormattedTextField fieldNome, fieldCPF, fieldNascimento;
+    private JFormattedTextField fieldNome, fieldCPF, fieldNascimento;
     private MaskFormatter maskCPF, maskNascimento;
-    private final JComboBox<String> comboSexo;
-    private final JButton buttonSalvar, buttonCancelar;
+    private JComboBox<String> comboSexo;
+    private JButton buttonSalvar, buttonCancelar;
     private String[] dados;
 
-    public Cadastro()
+    public FormView()
     {
-        setModalityType(DEFAULT_MODALITY_TYPE);
+        super.setModalityType(JDialog.DEFAULT_MODALITY_TYPE);
+
+        this.initComponents();
+
+        super.setContentPane(this.jOptionPane);
+        super.pack();
+        super.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+        super.setLocationRelativeTo(null);
+        super.setVisible(true);
+    }
+
+    private void initComponents()
+    {
         this.grid = new GridLayout(4, 1);
         this.panelLabels = new JPanel(this.grid);
         this.panelFields = new JPanel(this.grid);
@@ -83,19 +95,12 @@ public final class Cadastro extends JDialog implements ActionListener
                 this.panelPrincipal
             }
         );
-        setContentPane(this.jOptionPane);
-        pack();
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        Object o = e.getSource();
-
-        if ( o == this.buttonSalvar )
+        if ( e.getSource() == this.buttonSalvar )
         {
             this.dados = new String[]
             {
@@ -104,16 +109,12 @@ public final class Cadastro extends JDialog implements ActionListener
                 this.comboSexo.getSelectedItem().toString(),
                 this.fieldNascimento.getText()
             };
-        } else if ( o == this.buttonCancelar )
-        {
-            JOptionPane.showMessageDialog(rootPane, "Op. cancelada.");
         }
         this.dispose();
     }
 
-    public String[] getDados()
+    public String[] getData()
     {
         return this.dados;
     }
-
 }

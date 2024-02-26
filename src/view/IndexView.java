@@ -5,21 +5,21 @@ import javax.swing.JOptionPane;
 /**
  *
  */
-public class ContextView
+public class IndexView
 {
 
     final public int getOption()
     {
         return JOptionPane.showOptionDialog(
             null,
-            "Escolha a opção:",
-            "Olá",
+            "Choose an option:",
+            "Hello",
             JOptionPane.DEFAULT_OPTION,
             JOptionPane.INFORMATION_MESSAGE,
             null,
             new String[]
             {
-                "Funcionário", "Computador", "Cliente", "Sair"
+                "Employees", "Computers", "Clients", "Exit"
             },
             null
         );

@@ -16,7 +16,8 @@ abstract public class View
     {
         return JOptionPane.showOptionDialog(
             null,
-            "Escolha a opção:", "Olá",
+            "Escolha a opção:",
+            "Olá",
             JOptionPane.DEFAULT_OPTION,
             JOptionPane.INFORMATION_MESSAGE,
             null,
@@ -42,5 +43,4 @@ abstract public class View
     {
         return JOptionPane.showInputDialog("Informe o ID:");
     }
-
 }

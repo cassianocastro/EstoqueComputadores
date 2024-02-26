@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 /**
  *
  */
-public class ComputadorView extends View
+public class ComputerView extends View
 {
 
     @Override
@@ -13,49 +13,50 @@ public class ComputadorView extends View
     {
         return new String[]
         {
-            JOptionPane.showInputDialog("Marca:"),
-            JOptionPane.showInputDialog("Modelo:"),
-            JOptionPane.showInputDialog("Processador:"),
+            JOptionPane.showInputDialog("Mark:"),
+            JOptionPane.showInputDialog("Model:"),
+            JOptionPane.showInputDialog("Processor:"),
             JOptionPane.showInputDialog(
-            null,
-            "Selecione uma das opções abaixo:",
-            "Tipo de Aparelho",
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            new String[]
-            {
-                "Desktop", "Notebook", "Tablet", "Smartphone", "Cafeteira(Trolls)"
-            },
-            null
+                null,
+                "Choose one of the options below:",
+                "Type:",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new String[]
+                {
+                    "Desktop", "Notebook", "Tablet", "Smartphone"
+                },
+                null
             ).toString(),
-            JOptionPane.showInputDialog("Cor:"),
-            JOptionPane.showInputDialog("Memória RAM:"),
-            JOptionPane.showInputDialog("Capacidade de Armazenamento:"),
-            JOptionPane.showInputDialog("Tamanho da tela:")
+            JOptionPane.showInputDialog("Color:"),
+            JOptionPane.showInputDialog("RAM:"),
+            JOptionPane.showInputDialog("Storage:"),
+            JOptionPane.showInputDialog("Screen Size:")
         };
     }
 
     @Override
     public String[] update()
     {
-        String atributo = JOptionPane.showInputDialog(
+        String attribute = JOptionPane.showInputDialog(
             null,
-            "Tipo de Atributo:", "Alterar...",
+            "Attribute:",
+            "To alter...",
             JOptionPane.DEFAULT_OPTION,
             null,
             new String[]
             {
-                "Marca", "Modelo", "Processador", "Tipo",
-                "Cor", "RAM", "Armazenamento", "Tamanho da Tela"
+                "Mark", "Model", "Processor", "Type",
+                "Color", "RAM", "Storage", "Screen Size"
             },
             null
         ).toString();
-        String novoDado = JOptionPane.showInputDialog(null, atributo + ":");
+
+        String newData = JOptionPane.showInputDialog(null, attribute + ":");
+
         return new String[]
         {
-            atributo,
-            novoDado
+            attribute, newData
         };
     }
-
 }

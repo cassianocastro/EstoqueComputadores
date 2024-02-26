@@ -5,36 +5,36 @@ import javax.swing.*;
 /**
  *
  */
-public class FuncionarioView extends View
+public class EmployeeView extends View
 {
 
     @Override
     public String[] insert()
     {
-        Cadastro cadastro = new Cadastro();
-        return cadastro.getDados();
+        return new FormView().getData();
     }
 
     @Override
     public String[] update()
     {
-        String atributo = JOptionPane.showInputDialog(
+        String attribute = JOptionPane.showInputDialog(
             null,
-            "Tipo de Atributo:", "Alterar...",
+            "Attribute type:",
+            "To Alter...",
             JOptionPane.DEFAULT_OPTION,
             null,
             new String[]
             {
-                "Nome", "CPF", "Sexo", "Data de Nascimento"
+                "Name", "CPF", "Sex", "Birth Date"
             },
             null
         ).toString();
-        String novoDado = JOptionPane.showInputDialog(null, atributo + ":");
+
+        String newData = JOptionPane.showInputDialog(null, attribute + ":");
+
         return new String[]
         {
-            atributo,
-            novoDado
+            attribute, newData
         };
     }
-
 }
