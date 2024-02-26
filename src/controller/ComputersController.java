@@ -1,137 +1,124 @@
-package controll;
+package controller;
 
-import model.dao.ComputadorDAO;
-import view.*;
-import model.*;
 import java.sql.SQLException;
-import model.interfaces.ControllStrategy;
+import model.*;
+import model.dao.ComputerDAO;
+import view.*;
 
 /**
  *
  */
-public class ComputadorStrategy implements ControllStrategy
+public class ComputersController
 {
 
-    private final ComputadorDAO computadorDao;
-    private final View computadorView;
+    private final ComputerDAO computerDAO;
+    private final View computerView;
 
-    public ComputadorStrategy(ComputadorDAO computadorDao)
+    public ComputersController(ComputerDAO dao)
     {
-        this.computadorDao  = computadorDao;
-        this.computadorView = new ComputadorView();
+        this.computerDAO  = dao;
+        this.computerView = new ComputerView();
     }
 
-    @Override
     public void create() throws SQLException
     {
-        String[] dados = this.computadorView.insert();
-        if ( dados == null )
-        {
-            return;
-        }
+        String[] data = this.computerView.insert();
 
-        String marca = dados[0];
-        String modelo = dados[1];
-        String processador = dados[2];
-        String tipo = dados[3];
-        String cor = dados[4];
-        int ram = Integer.parseInt(dados[5]);
-        int armzmnto = Integer.parseInt(dados[6]);
-        float tamanhoTela = Float.parseFloat(dados[7]);
+        if ( data == null ) return;
 
-        this.computadorDao.create(
-            new Computer(
-                0, ram, armzmnto, tamanhoTela, marca, modelo, processador, cor, tipo
-            )
-        );
-        this.computadorView.show("Computador cadastrado.");
+        String mark      = data[0];
+        String model     = data[1];
+        String processor = data[2];
+        String type      = data[3];
+        String color     = data[4];
+        int ram          = Integer.parseInt(data[5]);
+        int storage      = Integer.parseInt(data[6]);
+        float screenSize = Float.parseFloat(data[7]);
+
+        this.computerDAO.insert(new Computer(
+            0L, ram, storage, screenSize, mark, model, processor, color, type
+        ));
+        this.computerView.show("Computador cadastrado.");
     }
 
-    @Override
     public void read() throws SQLException
     {
-        this.computadorView.show(
-            this.computadorDao.read().toString()
-        );
+        this.computerView.show(this.computerDAO.getAll().toString());
     }
 
-    @Override
     public void update() throws SQLException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.computadorView.getID()
-        );
-        if ( !isValid(ID) )
+        long id = Integer.parseUnsignedInt(this.computerView.getID());
+
+        if ( ! this.isValid(id) )
         {
-            this.computadorView.show("Computador não encontrado.");
+            this.computerView.show("Computador não encontrado.");
             return;
         }
 
-        Computer computador = this.computadorDao.findByID(ID);
-        String[] dados = this.computadorView.update();
-        switch ( dados[0] )
+        Computer computer = this.computerDAO.findByID(id);
+        String[] data     = this.computerView.update();
+
+        switch ( data[0] )
         {
             case "Marca":
-                computador.setMarca(dados[1]);
+                computer.setMark(data[1]);
                 break;
             case "Modelo":
-                computador.setModelo(dados[1]);
+                computer.setModel(data[1]);
                 break;
             case "Processador":
-                computador.setProcessador(dados[1]);
+                computer.setProcessor(data[1]);
                 break;
             case "Tipo":
-                computador.setTipo(dados[1]);
+                computer.setType(data[1]);
                 break;
             case "Cor":
-                computador.setCor(dados[1]);
+                computer.setColor(data[1]);
                 break;
             case "RAM":
-                computador.setRam(Integer.parseInt(dados[1]));
+                computer.setRAM(Integer.parseInt(data[1]));
                 break;
             case "Armazenamento":
-                computador.setArmazenamento(Integer.parseInt(dados[1]));
+                computer.setStorage(Integer.parseInt(data[1]));
                 break;
             default:
-                computador.setTamanhoTela(Float.parseFloat(dados[1]));
+                computer.setScreenSize(Float.parseFloat(data[1]));
         }
-        this.computadorDao.update(computador);
-        this.computadorView.show("Registro atualizado.");
+        this.computerDAO.update(computer);
+        this.computerView.show("Registro atualizado.");
     }
 
-    @Override
     public void delete() throws SQLException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.computadorView.getID()
-        );
-        if ( isValid(ID) )
+        int id = Integer.parseUnsignedInt(this.computerView.getID());
+
+        if ( this.isValid(id) )
         {
-            this.computadorDao.delete(ID);
-            this.computadorView.show("Computador excluído.");
+            this.computerDAO.delete(id);
+            this.computerView.show("Computador excluído.");
+
             return;
         }
-        this.computadorView.show("Computador não encontrado.");
+        this.computerView.show("Computador não encontrado.");
     }
 
-    @Override
     public void search() throws SQLException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.computadorView.getID()
-        );
-        if ( isValid(ID) )
+        long id = Integer.parseUnsignedInt(this.computerView.getID());
+
+        if ( this.isValid(id) )
         {
-            Computer computador = this.computadorDao.findByID(ID);
-            this.computadorView.show(computador.toString());
+            Computer computer = this.computerDAO.findByID(id);
+            this.computerView.show(computer.toString());
+
             return;
         }
-        this.computadorView.show("Computador não encontrado.");
+        this.computerView.show("Computador não encontrado.");
     }
 
-    @Override
-    public boolean isValid(int ID) throws SQLException
+    public boolean isValid(long id) throws SQLException
     {
-        return this.computadorDao.exists(ID);
+        return this.computerDAO.exists(id);
     }
 }

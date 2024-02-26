@@ -1,126 +1,109 @@
-package controll;
+package controller;
 
-import model.dao.ClienteDAO;
-import model.interfaces.*;
+import java.sql.SQLException;
+import model.dao.ClientDAO;
 import model.*;
 import view.*;
-import java.sql.SQLException;
 
 /**
- * 
+ *
  */
-public class ClienteStrategy implements ControllStrategy
+public class ClientsController
 {
 
-    private final PersonDAO clienteDao;
-    private final View clienteView;
+    private final ClientDAO clientDao;
+    private final View clientView;
 
-    public ClienteStrategy(ClienteDAO clientDAO)
+    public ClientsController(ClientDAO dao)
     {
-        this.clienteDao  = clientDAO;
-        this.clienteView = new ClienteView();
+        this.clientDao  = dao;
+        this.clientView = new ClientView();
     }
 
-    @Override
     public void create() throws SQLException
     {
-        String[] dados = this.clienteView.insert();
-        if ( dados == null )
-        {
-            return;
-        }
+        String[] data = this.clientView.insert();
+
+        if ( data == null ) return;
 
         /*
-            String nome = dados[0];
-            String cpf  = dados[1];
-            Sexo sexo   = Sexo.valueOf(dados[2]);
-            Date date   = new SimpleDateFormat("dd/MM/yyyy").parse(dados[3]);
+            String name = data[0];
+            String cpf  = data[1];
+            Sexo sex    = Sex.valueOf(data[2]);
+            Date date   = new SimpleDateFormat("dd/MM/yyyy").parse(data[3]);
 
-            this.clienteDao.create(
-                new Cliente( 0, nome, cpf, sexo, date )
-            );
+            this.clientDao.insert(new Client(0, name, cpf, sex, date));
         */
-        this.clienteView.show("Cliente cadastrado.");
+        this.clientView.show("Cliente cadastrado.");
     }
 
-    @Override
     public void read() throws SQLException
     {
-        this.clienteView.show(
-            this.clienteDao.read().toString()
-        );
+        this.clientView.show(this.clientDao.getAll().toString());
     }
 
-    @Override
     public void update() throws SQLException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.clienteView.getID()
-        );
-        if ( !isValid(ID) )
+        long id = Integer.parseUnsignedInt(this.clientView.getID());
+
+        if ( ! this.isValid(id) )
         {
-            this.clienteView.show("Cliente não encontrado.");
+            this.clientView.show("Cliente não encontrado.");
             return;
         }
 
-        Client cliente = (Client) this.clienteDao.findByID(ID);
-        String[] dados = this.clienteView.update();
-        switch ( dados[0] )
+        Client client = this.clientDao.findByID(id);
+        String[] data = this.clientView.update();
+
+        switch ( data[0] )
         {
             case "Nome":
-                cliente.setNome(dados[1]);
+                client.setName(data[1]);
                 break;
             case "CPF":
-                cliente.setCpf(dados[1]);
+                client.setCPF(data[1]);
                 break;
             case "Sexo":
-                cliente.setSexo(Sex.valueOf(dados[1]));
+                client.setSex(Sex.valueOf(data[1]));
                 break;
             default:
-            /*
-                cliente.setNascimento(
-                    new SimpleDateFormat("dd/MM/yyyy").parse(dados[1])
-                );
-            */
+                // client.setBirthDate(new SimpleDateFormat("dd/MM/yyyy").parse(data[1]));
+
         }
-        this.clienteDao.update(cliente);
-        this.clienteView.show("Registro atualizado.");
+        this.clientDao.update(client);
+        this.clientView.show("Registro atualizado.");
     }
 
-    @Override
     public void delete() throws SQLException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.clienteView.getID()
-        );
-        if ( isValid(ID) )
+        int id = Integer.parseUnsignedInt(this.clientView.getID());
+
+        if ( this.isValid(id) )
         {
-            this.clienteDao.delete(ID);
-            this.clienteView.show("Cliente excluído.");
+            // this.clientDao.delete(id);
+            this.clientView.show("Cliente excluído.");
+
             return;
         }
-        this.clienteView.show("Cliente não encontrado.");
+        this.clientView.show("Cliente não encontrado.");
     }
 
-    @Override
     public void search() throws SQLException
     {
-        int ID = Integer.parseUnsignedInt(
-            this.clienteView.getID()
-        );
-        if ( isValid(ID) )
+        long id = Integer.parseUnsignedInt(this.clientView.getID());
+
+        if ( this.isValid(id) )
         {
-            Object cliente = this.clienteDao.findByID(ID);
-            this.clienteView.show(cliente.toString());
+            Client client = this.clientDao.findByID(id);
+            this.clientView.show(client.toString());
+
             return;
         }
-        this.clienteView.show("Cliente não encontrado.");
+        this.clientView.show("Cliente não encontrado.");
     }
 
-    @Override
-    public boolean isValid(int ID) throws SQLException
+    public boolean isValid(long id) throws SQLException
     {
-        return this.clienteDao.exists(ID);
+        return this.clientDao.exists(id);
     }
-
 }

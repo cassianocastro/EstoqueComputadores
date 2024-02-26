@@ -1,129 +1,113 @@
-package controll;
+package controller;
 
-import model.dao.FuncionarioDAO;
+import java.sql.SQLException;
+import model.dao.EmployeeDAO;
 import model.*;
 import view.*;
-import java.sql.SQLException;
-import model.interfaces.ControllStrategy;
 
 /**
  *
  */
-public class FuncionarioStrategy implements ControllStrategy
+public class EmployeesController
 {
 
-    private final FuncionarioDAO funcionarioDAO;
-    private final View funcionarioView;
+    private final EmployeeDAO employeeDAO;
+    private final View employeeView;
 
-    public FuncionarioStrategy(FuncionarioDAO funcionarioDAO)
+    public EmployeesController(EmployeeDAO dao)
     {
-        this.funcionarioDAO  = funcionarioDAO;
-        this.funcionarioView = new FuncionarioView();
+        this.employeeDAO  = dao;
+        this.employeeView = new EmployeeView();
     }
 
-    @Override
     public void create() throws SQLException
     {
-        String[] dados = this.funcionarioView.insert();
-        if ( dados == null )
-        {
-            return;
-        }
+        String[] data = this.employeeView.insert();
+
+        if ( data == null ) return;
 
         /*
-            String nome = dados[0];
-            String cpf  = dados[1];
-            Sexo sexo   = Sexo.valueOf(dados[2]);
-            Date date   = new SimpleDateFormat("dd/MM/yyyy").parse(dados[3]);
+            String name = data[0];
+            String cpf  = data[1];
+            Sexo sex    = Sex.valueOf(data[2]);
+            Date date   = new SimpleDateFormat("dd/MM/yyyy").parse(data[3]);
 
-            this.funcionarioDAO.create(
-                new Funcionario( 0, nome, cpf, sexo, date )
-            );
+            this.employeeDAO.insert(new Employee(0, name, cpf, sex, date));
         */
-        this.funcionarioView.show("Funcionário cadastrado");
+        this.employeeView.show("Funcionário cadastrado");
     }
 
-    @Override
     public void read() throws SQLException
     {
-        this.funcionarioView.show(
-            this.funcionarioDAO.read().toString()
-        );
+        this.employeeView.show(this.employeeDAO.getAll().toString());
     }
 
-    @Override
     public void update() throws SQLException
     {
-        int ID = converterID();
+        long id = converterID();
 
-        if ( !isValid(ID) )
+        if ( ! this.isValid(id) )
         {
-            this.funcionarioView.show("Funcionário não encontrado.");
+            this.employeeView.show("Funcionário não encontrado.");
             return;
         }
 
-        Funcionario funcionario = (Funcionario) this.funcionarioDAO.findByID(ID);
-        String[] dados = this.funcionarioView.update();
-        switch ( dados[0] )
+        Employee employee = this.employeeDAO.findByID(id);
+        String[] data     = this.employeeView.update();
+
+        switch ( data[0] )
         {
             case "Nome":
-                funcionario.setNome(dados[1]);
+                employee.setName(data[1]);
                 break;
             case "CPF":
-                funcionario.setCpf(dados[1]);
+                employee.setCPF(data[1]);
                 break;
             case "Sexo":
-                funcionario.setSexo(Sex.valueOf(dados[1]));
+                employee.setSex(Sex.valueOf(data[1]));
                 break;
             default:
-            /*
-                funcionario.setNascimento(
-                    new SimpleDateFormat("dd/MM/yyyy").parse(dados[1])
-                );
-            */
+                // employee.setBirthDate(new SimpleDateFormat("dd/MM/yyyy").parse(data[1]));
         }
-        this.funcionarioDAO.update(funcionario);
-        this.funcionarioView.show("Registro atualizado.");
+        this.employeeDAO.update(employee);
+        this.employeeView.show("Registro atualizado.");
     }
 
-    @Override
     public void delete() throws SQLException
     {
-        int ID = converterID();
+        long id = this.converterID();
 
-        if ( isValid(ID) )
+        if ( this.isValid(id) )
         {
-            this.funcionarioDAO.delete(ID);
-            this.funcionarioView.show("Funcionário excluído");
+            // this.employeeDAO.delete(id);
+            this.employeeView.show("Funcionário excluído");
+
             return;
         }
-        this.funcionarioView.show("Funcionário não encontrado.");
+        this.employeeView.show("Funcionário não encontrado.");
     }
 
-    @Override
     public void search() throws SQLException
     {
-        int ID = converterID();
+        long id = this.converterID();
 
-        if ( isValid(ID) )
+        if ( this.isValid(id) )
         {
-            Funcionario funcionario = (Funcionario) this.funcionarioDAO.findByID(ID);
-            this.funcionarioView.show(funcionario.toString());
+            Employee employee = this.employeeDAO.findByID(id);
+            this.employeeView.show(employee.toString());
+
             return;
         }
-        this.funcionarioView.show("Funcionário não encontrado.");
+        this.employeeView.show("Funcionário não encontrado.");
     }
 
     private int converterID()
     {
-        return Integer.parseUnsignedInt(
-            this.funcionarioView.getID()
-        );
+        return Integer.parseUnsignedInt(this.employeeView.getID());
     }
 
-    @Override
-    public boolean isValid(int ID) throws SQLException
+    public boolean isValid(long id) throws SQLException
     {
-        return this.funcionarioDAO.exists(ID);
+        return this.employeeDAO.exists(id);
     }
 }
