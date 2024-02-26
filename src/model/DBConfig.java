@@ -3,29 +3,32 @@ package model;
 import java.io.Serializable;
 import org.json.JSONObject;
 
-final public class ConfigDataBase implements Serializable
+/**
+ *
+ */
+final public class DBConfig implements Serializable
 {
 
-    private final String host, port, dbName, dataBase, userName, password;
+    private final int port;
+    private final String host, driver, database, user, password;
 
-    public ConfigDataBase(String host, String port, String dbName,
-                          String dataBase, String userName, String password)
+    public DBConfig(int port, String host, String driver, String database, String user, String password)
     {
-        this.host     = host;
         this.port     = port;
-        this.dbName   = dbName;
-        this.dataBase = dataBase;
-        this.userName = userName;
+        this.host     = host;
+        this.driver   = driver;
+        this.database = database;
+        this.user     = user;
         this.password = password;
     }
 
-    public ConfigDataBase(JSONObject json)
+    public DBConfig(JSONObject json)
     {
+        this.port     = json.getInt("port");
         this.host     = json.getString("host");
-        this.port     = json.getString("port");
-        this.dbName   = json.getString("dbName");
-        this.dataBase = json.getString("dataBase");
-        this.userName = json.getString("userName");
+        this.driver   = json.getString("driver");
+        this.database = json.getString("database");
+        this.user     = json.getString("user");
         this.password = json.getString("password");
     }
 
@@ -35,37 +38,17 @@ final public class ConfigDataBase implements Serializable
 
         json.put("host", this.host);
         json.put("port", this.port);
-        json.put("dbName", this.dbName);
-        json.put("dataBase", this.dataBase);
-        json.put("userName", this.userName);
+        json.put("driver", this.driver);
+        json.put("database", this.database);
+        json.put("user", this.user);
         json.put("password", this.password);
 
         return json;
     }
 
-    public String getHost()
-    {
-        return this.host;
-    }
-
-    public String getPort()
-    {
-        return this.port;
-    }
-
-    public String getDBname()
-    {
-        return this.dbName;
-    }
-
-    public String getDataBase()
-    {
-        return this.dataBase;
-    }
-
     public String getUser()
     {
-        return this.userName;
+        return this.user;
     }
 
     public String getPassword()
@@ -73,12 +56,10 @@ final public class ConfigDataBase implements Serializable
         return this.password;
     }
 
-    public String getURL()
+    public String getDSN()
     {
-        return "jdbc:" + this.dbName
-            + "://" + this.host
-            + ":" + this.port
-            + "/" + this.dataBase;
+        return String.format(
+            "jdbc:%s://%s:%d/%s", this.driver, this.host, this.port, this.database
+        );
     }
-
 }

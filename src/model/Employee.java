@@ -1,34 +1,15 @@
 package model;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  *
  */
-public class Funcionario extends Person
+public class Employee extends Person
 {
 
-    private int ID;
-
-    public Funcionario(int ID, String nome, String cpf, Sex sexo, Date nascimento)
+    public Employee(Long id, String name, String cpf, Sex sex, Calendar birthDate)
     {
-        super(nome, cpf, sexo, nascimento);
-        this.ID = ID;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ID: " + this.ID + super.toString();
-    }
-
-    public void setID(int ID)
-    {
-        this.ID = ID;
-    }
-
-    public int getID()
-    {
-        return this.ID;
+        super(id, name, cpf, sex, birthDate);
     }
 }

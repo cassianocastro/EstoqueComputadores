@@ -1,7 +1,6 @@
 package model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -9,66 +8,68 @@ import java.util.Date;
 abstract public class Person
 {
 
-    private String nome, cpf;
-    private Sex sexo;
-    private Date nascimento;
+    private Long id;
+    private String name;
+    private String cpf;
+    private Sex sex;
+    private Calendar birthDate;
 
-    public Person(String nome, String cpf, Sex sexo, Date nascimento)
+    public Person(Long id, String name, String cpf, Sex sex, Calendar birthDate)
     {
-        this.nome = nome;
-        this.sexo = sexo;
-        this.cpf = cpf;
-        this.nascimento = nascimento;
+        this.id        = id;
+        this.name      = name;
+        this.sex       = sex;
+        this.cpf       = cpf;
+        this.birthDate = birthDate;
     }
 
-    @Override
-    public String toString()
+    public Long getID()
     {
-        return "\nNome: " + this.nome
-            + "\nSexo: " + this.sexo.getDescricao()
-            + "\nCPF: " + this.cpf
-            + "\nData de "
-            + "Nascimento: " + new SimpleDateFormat("dd/MM/yyyy")
-                .format(this.nascimento);
+        return this.id;
     }
 
-    public String getNome()
+    public void setID(Long id)
     {
-        return this.nome;
+        this.id = id;
     }
 
-    public void setNome(String nome)
+    public String getName()
     {
-        this.nome = nome;
+        return this.name;
     }
 
-    public String getCpf()
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getCPF()
     {
         return this.cpf;
     }
 
-    public void setCpf(String cpf)
+    public void setCPF(String cpf)
     {
         this.cpf = cpf;
     }
 
-    public String getSexo()
+    public String getSex()
     {
-        return this.sexo.getDescricao();
+        return this.sex.getDescription();
     }
 
-    public void setSexo(Sex sexo)
+    public void setSex(Sex sex)
     {
-        this.sexo = sexo;
+        this.sex = sex;
     }
 
-    public Date getNascimento()
+    public Calendar getBirthDate()
     {
-        return this.nascimento;
+        return this.birthDate;
     }
 
-    public void setNascimento(Date data_nascimento)
+    public void setBirthDate(Calendar birthDate)
     {
-        this.nascimento = data_nascimento;
+        this.birthDate = birthDate;
     }
 }

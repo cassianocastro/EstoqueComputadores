@@ -2,131 +2,121 @@ package model;
 
 /**
  *
- *
  */
 public class Computer
 {
 
-    private int ID, ram, armazenamento;
-    private String marca, modelo, processador, cor, tipo;
-    private float tamanhoTela;
+    private Long id;
+    private int ram;
+    private int storage;
+    private String mark;
+    private String model;
+    private String processor;
+    private String color;
+    private String type;
+    private float screenSize;
 
-    public Computer(int ID, int ram, int armazenamento, float tamanhoTela,
-                    String marca, String modelo, String processador, String cor, String tipo)
+    public Computer(Long id, int ram, int storage, float screenSize,
+                    String mark, String model, String processor, String color, String type)
     {
-        this.ID = ID;
-        this.ram = ram;
-        this.armazenamento = armazenamento;
-        this.marca = marca;
-        this.modelo = modelo;
-        this.processador = processador;
-        this.cor = cor;
-        this.tipo = tipo;
-        this.tamanhoTela = tamanhoTela;
+        this.id         = id;
+        this.ram        = ram;
+        this.storage    = storage;
+        this.mark       = mark;
+        this.model      = model;
+        this.processor  = processor;
+        this.color      = color;
+        this.type       = type;
+        this.screenSize = screenSize;
     }
 
-    @Override
-    public String toString()
+    public Long getID()
     {
-        return "\nID: " + this.ID
-            + "\nMarca: " + this.marca
-            + "\nModelo: " + this.modelo
-            + "\nMemória RAM: " + this.ram + " GB"
-            + "\nArmazenamento: " + this.armazenamento + " GB"
-            + "\nProcessador: " + this.processador
-            + "\nTipo: " + this.tipo
-            + "\nTamanho da Tela: " + this.tamanhoTela + "\""
-            + "\nCor: " + this.cor;
+        return this.id;
     }
 
-    public int getID()
+    public void setID(Long id)
     {
-        return ID;
+        this.id = id;
     }
 
-    public void setID(int ID)
+    public int getRAM()
     {
-        this.ID = ID;
+        return this.ram;
     }
 
-    public int getRam()
-    {
-        return ram;
-    }
-
-    public void setRam(int ram)
+    public void setRAM(int ram)
     {
         this.ram = ram;
     }
 
-    public int getArmazenamento()
+    public int getStorage()
     {
-        return armazenamento;
+        return this.storage;
     }
 
-    public void setArmazenamento(int armazenamento)
+    public void setStorage(int storage)
     {
-        this.armazenamento = armazenamento;
+        this.storage = storage;
     }
 
-    public String getMarca()
+    public String getMark()
     {
-        return marca;
+        return this.mark;
     }
 
-    public void setMarca(String marca)
+    public void setMark(String mark)
     {
-        this.marca = marca;
+        this.mark = mark;
     }
 
-    public String getModelo()
+    public String getModel()
     {
-        return modelo;
+        return this.model;
     }
 
-    public void setModelo(String modelo)
+    public void setModel(String model)
     {
-        this.modelo = modelo;
+        this.model = model;
     }
 
-    public String getProcessador()
+    public String getProcessor()
     {
-        return processador;
+        return this.processor;
     }
 
-    public void setProcessador(String processador)
+    public void setProcessor(String processor)
     {
-        this.processador = processador;
+        this.processor = processor;
     }
 
-    public String getCor()
+    public String getColor()
     {
-        return cor;
+        return this.color;
     }
 
-    public void setCor(String cor)
+    public void setColor(String color)
     {
-        this.cor = cor;
+        this.color = color;
     }
 
-    public String getTipo()
+    public String getType()
     {
-        return tipo;
+        return this.type;
     }
 
-    public void setTipo(String tipo)
+    public void setType(String type)
     {
-        this.tipo = tipo;
+        this.type = type;
     }
 
-    public float getTamanhoTela()
+    public float getScreenSize()
     {
-        return tamanhoTela;
+        return this.screenSize;
     }
 
-    public void setTamanhoTela(float tamanhoTela)
+    public void setScreenSize(float screenSize)
     {
-        this.tamanhoTela = tamanhoTela;
+        this.screenSize = screenSize;
     }
-
 }

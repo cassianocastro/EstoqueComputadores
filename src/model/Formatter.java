@@ -1,38 +1,50 @@
 package model;
 
-import java.util.*;
+import java.text.SimpleDateFormat;
 
 /**
  *
  */
-public class Clientes
+public class Formatter
 {
 
-    private final List<Client> clientes;
-
-    public Clientes()
+    public String formatPerson(Person person)
     {
-        this.clientes = new LinkedList<>();
+        return String.format(
+            "\n\nID: %d"
+            + "\nName: %s"
+            + "\nSex: %s"
+            + "\nCPF: %s"
+            + "\nBirth Date: %s",
+            person.getID(),
+            person.getName(),
+            person.getSex(),
+            person.getCPF(),
+            new SimpleDateFormat("dd/MM/yyyy").format(person.getBirthDate())
+        );
     }
 
-    public void add(Client client)
+    public String formatComputer(Computer computer)
     {
-        this.clientes.add(client);
+        return String.format(
+            "\n\nID: %d"
+            + "\nMarca: %s"
+            + "\nModelo: %s"
+            + "\nMemória RAM: %dGB"
+            + "\nArmazenamento: %dGB"
+            + "\nProcessador: %s"
+            + "\nTipo: %s"
+            + "\nTamanho da Tela: %f\""
+            + "\nCor: %s",
+            computer.getID(),
+            computer.getMark(),
+            computer.getModel(),
+            computer.getRAM(),
+            computer.getStorage(),
+            computer.getProcessor(),
+            computer.getType(),
+            computer.getScreenSize(),
+            computer.getColor()
+        );
     }
-
-    public CharSequence toSequence()
-    {
-        if ( !this.clientes.isEmpty() )
-        {
-            StringBuilder msg = new StringBuilder();
-            for ( Client cliente : this.clientes )
-            {
-                msg.append(cliente.toString());
-                msg.append("\n***\n");
-            }
-            return msg;
-        }
-        return new StringBuilder("Sem registros");
-    }
-
 }
