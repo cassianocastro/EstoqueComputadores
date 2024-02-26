@@ -1,5 +1,5 @@
 nbproject/
-build/
+build.xml
 dist/
 
 src/org/
