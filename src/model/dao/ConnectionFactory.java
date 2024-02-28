@@ -21,6 +21,7 @@ public class ConnectionFactory
                 config.getPassword()
             );
         }
+
         return this.connection;
     }
 }

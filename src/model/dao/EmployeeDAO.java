@@ -83,6 +83,7 @@ public class EmployeeDAO
 
                 list.add(new Employee(Long.parseLong(id), name, cpf, sex, date));
             }
+
             return list;
         }
     }
@@ -101,6 +102,7 @@ public class EmployeeDAO
             {
                 throw new SQLException("Employee not found!");
             }
+
             String name   = rs.getString("name");
             String cpf    = rs.getString("cpf");
             Sex sex       = Sex.valueOf(rs.getString("sex"));
@@ -126,6 +128,7 @@ public class EmployeeDAO
             {
                 return rs.getInt("result") == 1;
             }
+
             return false;
         }
     }

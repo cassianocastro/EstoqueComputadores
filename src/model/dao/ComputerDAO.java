@@ -94,6 +94,7 @@ public class ComputerDAO
 
                 list.add(new Computer(id, ram, storage, screenSize, mark, model, processor, color, type));
             }
+
             return list;
         }
     }
@@ -112,6 +113,7 @@ public class ComputerDAO
             {
                 throw new SQLException("Computer not found!");
             }
+
             int ram          = rs.getInt("ram");
             int storage      = rs.getInt("storage");
             String mark      = rs.getString("mark");
@@ -139,6 +141,7 @@ public class ComputerDAO
             {
                 return rs.getInt("result") == 1;
             }
+
             return false;
         }
     }

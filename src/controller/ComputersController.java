@@ -38,6 +38,7 @@ public class ComputersController
         this.computerDAO.insert(new Computer(
             0L, ram, storage, screenSize, mark, model, processor, color, type
         ));
+
         this.computerView.show("Computador cadastrado.");
     }
 
@@ -53,6 +54,7 @@ public class ComputersController
         if ( ! this.isValid(id) )
         {
             this.computerView.show("Computador não encontrado.");
+
             return;
         }
 
@@ -85,6 +87,7 @@ public class ComputersController
             default:
                 computer.setScreenSize(Float.parseFloat(data[1]));
         }
+
         this.computerDAO.update(computer);
         this.computerView.show("Registro atualizado.");
     }
@@ -100,6 +103,7 @@ public class ComputersController
 
             return;
         }
+
         this.computerView.show("Computador não encontrado.");
     }
 
@@ -110,10 +114,12 @@ public class ComputersController
         if ( this.isValid(id) )
         {
             Computer computer = this.computerDAO.findByID(id);
+
             this.computerView.show(computer.toString());
 
             return;
         }
+
         this.computerView.show("Computador não encontrado.");
     }
 

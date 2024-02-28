@@ -47,7 +47,8 @@ final public class FormView extends JDialog implements ActionListener
         {
             this.maskCPF = new MaskFormatter("###.###.###-##");
             this.maskNascimento = new MaskFormatter("##/##/####");
-        } catch (ParseException e)
+        }
+        catch ( ParseException e )
         {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -55,10 +56,7 @@ final public class FormView extends JDialog implements ActionListener
         this.fieldNome = new JFormattedTextField();
         this.fieldCPF = new JFormattedTextField(this.maskCPF);
         this.fieldNascimento = new JFormattedTextField(this.maskNascimento);
-        this.comboSexo = new JComboBox<>(new String[]
-        {
-            "m", "f"
-        });
+        this.comboSexo = new JComboBox<>(new String[] { "m", "f" });
 
         this.fieldNome.setColumns(20);
 
@@ -110,6 +108,7 @@ final public class FormView extends JDialog implements ActionListener
                 this.fieldNascimento.getText()
             };
         }
+
         this.dispose();
     }
 

@@ -49,6 +49,7 @@ public class ClientsController
         if ( ! this.isValid(id) )
         {
             this.clientView.show("Cliente não encontrado.");
+
             return;
         }
 
@@ -68,8 +69,8 @@ public class ClientsController
                 break;
             default:
                 // client.setBirthDate(new SimpleDateFormat("dd/MM/yyyy").parse(data[1]));
-
         }
+
         this.clientDao.update(client);
         this.clientView.show("Registro atualizado.");
     }
@@ -85,6 +86,7 @@ public class ClientsController
 
             return;
         }
+
         this.clientView.show("Cliente não encontrado.");
     }
 
@@ -95,10 +97,12 @@ public class ClientsController
         if ( this.isValid(id) )
         {
             Client client = this.clientDao.findByID(id);
+
             this.clientView.show(client.toString());
 
             return;
         }
+
         this.clientView.show("Cliente não encontrado.");
     }
 

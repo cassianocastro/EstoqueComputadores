@@ -83,6 +83,7 @@ public class ClientDAO
 
                 list.add(new Client(Long.parseLong(id), name, cpf, sex, date));
             }
+
             return list;
         }
     }
@@ -101,6 +102,7 @@ public class ClientDAO
             {
                 throw new SQLException("Client not found!");
             }
+
             String name   = rs.getString("name");
             String cpf    = rs.getString("cpf");
             Sex sex       = Sex.valueOf(rs.getString("sex"));
@@ -126,6 +128,7 @@ public class ClientDAO
             {
                 return rs.getInt("result") == 1;
             }
+
             return false;
         }
     }

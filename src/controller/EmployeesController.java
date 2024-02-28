@@ -49,6 +49,7 @@ public class EmployeesController
         if ( ! this.isValid(id) )
         {
             this.employeeView.show("Funcionário não encontrado.");
+
             return;
         }
 
@@ -69,6 +70,7 @@ public class EmployeesController
             default:
                 // employee.setBirthDate(new SimpleDateFormat("dd/MM/yyyy").parse(data[1]));
         }
+
         this.employeeDAO.update(employee);
         this.employeeView.show("Registro atualizado.");
     }
@@ -84,6 +86,7 @@ public class EmployeesController
 
             return;
         }
+
         this.employeeView.show("Funcionário não encontrado.");
     }
 
@@ -94,10 +97,12 @@ public class EmployeesController
         if ( this.isValid(id) )
         {
             Employee employee = this.employeeDAO.findByID(id);
+
             this.employeeView.show(employee.toString());
 
             return;
         }
+
         this.employeeView.show("Funcionário não encontrado.");
     }
 

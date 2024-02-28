@@ -18,7 +18,8 @@ public class App
         try (Connection connection = new ConnectionFactory().getConnection(config))
         {
 
-        } catch (SQLException e)
+        }
+        catch ( SQLException e )
         {
             System.out.println(e.getMessage());
             System.exit(0);
