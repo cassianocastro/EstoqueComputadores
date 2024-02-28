@@ -1,7 +1,3 @@
-/**
- * Created: 20 de mai de 2022
- */
-
 CREATE TABLE IF NOT EXISTS client (
     PK_ID     INTEGER PRIMARY KEY,
     name      TEXT NOT NULL,
