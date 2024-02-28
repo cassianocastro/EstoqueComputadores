@@ -1,7 +1,8 @@
 nbproject/
-build.xml
+build/
 dist/
 
 src/org/
 
+*.xml
 *.sqlite
